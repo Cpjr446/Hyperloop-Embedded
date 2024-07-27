@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyperloop Pod Monitoring</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+  <h1>Hyperloop Pod Monitoring</h1>
+  <div>
+    <p>Temperature: <span id="temperature"></span> °C</p>
+    <p>Acceleration: <span id="acceleration"></span></p>
+  </div>
+  <button onclick="startCooling()">Start Cooling</button>
+  <button onclick="stopCooling()">Stop Cooling</button>
+
+  <script>
+    const options = {
+      username: 'hivemq.webclient.1721157701399', 
+      password: 'Du32x$W,<mreRHaAL45#', 
+    };
+
+    const client = mqtt.connect('mqtt://e9a94e816f1f4b5a9fb07635ed0ccfb9.s1.eu.hivemq.cloud:8883', options);
+    
+    client.on('connect', () => {
+      console.log('Connected to broker');
+      client.subscribe('pod/sensors', (err) => {
+        if (!err) {
+          console.log('Subscribed to pod/sensors');
+        }
+      });
+    });
+
+    client.on('message', (topic, message) => {
+      const data = JSON.parse(message.toString());
+      document.getElementById('temperature').innerText = data.temperature;
+      document.getElementById('acceleration').innerText = `Ax: ${data.ax}, Ay: ${data.ay}, Az: ${data.az}`;
+    });
+
+    function startCooling() {
+      client.publish('pod/control', 'startCooling');
+    }
+
+    function stopCooling() {
+      client.publish('pod/control', 'stopCooling');
+    }
+  </script>
+</body>
+</html>
