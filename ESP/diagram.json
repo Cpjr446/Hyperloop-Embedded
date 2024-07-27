@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "author": "Chandraprakash ",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": -4.76, "attrs": {} },
+    { "type": "wokwi-mpu6050", "id": "imu1", "top": -24.98, "left": -141.68, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": 48.3, "left": 167.4, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relay1", "top": 96.2, "left": -153.6, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "imu1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "imu1:GND", "esp:GND.2", "black", [ "v48", "h172.88" ] ],
+    [ "esp:22", "imu1:SCL", "green", [ "h0" ] ],
+    [ "esp:21", "imu1:SDA", "green", [ "h0" ] ],
+    [ "dht1:SDA", "esp:4", "green", [ "v0" ] ],
+    [ "esp:5", "relay1:IN", "green", [ "h0" ] ],
+    [ "esp:3V3", "relay1:VCC", "green", [ "h0" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "esp:GND.2", "relay1:GND", "black", [ "v96", "h-249.6" ] ]
+  ],
+  "dependencies": {}
+}
